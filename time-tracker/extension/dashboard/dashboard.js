@@ -233,7 +233,7 @@ function removeDomain(type, domain) {
 async function syncToBackend() {
   const all = await getSessions();
   try {
-    const res = await fetch("http://localhost:8000/api/sessions/bulk", {
+    const res = await fetch("https://focusflow-y99w.onrender.com/api/sessions/bulk", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ sessions: all })
