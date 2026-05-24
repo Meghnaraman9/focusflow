@@ -244,7 +244,7 @@ async function syncToBackend() {
     alert("Backend offline. Run: uvicorn main:app --reload");
   }
 }
-
+document.getElementById("sync-btn").addEventListener("click", syncToBackend);
 // Init — wire up tab buttons properly
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', function() {
