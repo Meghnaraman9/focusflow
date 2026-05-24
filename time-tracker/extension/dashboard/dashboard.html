@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FocusFlow – Dashboard</title>
+  <script src="chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0d;
+      --surface: #13131a;
+      --surface2: #1b1b24;
+      --border: #25252f;
+      --accent: #e8ff47;
+      --accent2: #ff6b35;
+      --productive: #47ffb2;
+      --unproductive: #ff4f4f;
+      --neutral: #8888aa;
+      --text: #f0f0f5;
+      --text-dim: #6060aa;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', system-ui, sans-serif;
+      min-height: 100vh;
+    }
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px; position: sticky; top: 0; z-index: 100;
+    }
+    .nav-logo { font-size: 18px; font-weight: 800; }
+    .nav-logo span { color: var(--accent); }
+    .nav-tabs { display: flex; gap: 4px; }
+    .tab-btn {
+      font-family: system-ui, sans-serif; font-size: 12px; font-weight: 600;
+      background: transparent; border: none; color: var(--text-dim);
+      padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+    }
+    .tab-btn.active, .tab-btn:hover { background: var(--surface2); color: var(--text); }
+    .tab-btn.active { color: var(--accent); }
+    .nav-sync {
+      font-family: system-ui, sans-serif; font-size: 11px; font-weight: 700;
+      background: var(--accent); color: #0a0a0d;
+      border: none; padding: 8px 18px; border-radius: 8px; cursor: pointer; transition: 0.2s;
+    }
+    .nav-sync:hover { background: #d4eb00; }
+
+    main { padding: 32px 40px; max-width: 1200px; margin: 0 auto; }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* OVERVIEW */
+    .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
+    .kpi {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px 22px; position: relative; overflow: hidden;
+    }
+    .kpi::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .kpi.k-total::before { background: var(--accent); }
+    .kpi.k-prod::before { background: var(--productive); }
+    .kpi.k-unprod::before { background: var(--unproductive); }
+    .kpi.k-streak::before { background: var(--accent2); }
+    .kpi-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; }
+    .kpi-value { font-size: 36px; font-weight: 800; margin-top: 8px; line-height: 1; }
+    .kpi-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+
+    .charts-row { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; margin-bottom: 24px; }
+    .chart-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px 24px;
+    }
+    .chart-card.full { grid-column: 1/-1; }
+    .chart-title { font-size: 13px; font-weight: 700; margin-bottom: 18px; }
+    .chart-title span { color: var(--text-dim); font-weight: 400; font-size: 11px; margin-left: 6px; }
+    canvas { max-height: 220px; }
+
+    /* SITES TABLE */
+    .sites-table { width: 100%; border-collapse: collapse; }
+    .sites-table th {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: var(--text-dim);
+      text-transform: uppercase; text-align: left; padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sites-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; }
+    .sites-table tr:hover td { background: var(--surface2); }
+    .badge-sm {
+      display: inline-block; padding: 2px 8px; border-radius: 20px;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .bp { background: rgba(71,255,178,0.12); color: var(--productive); }
+    .bu { background: rgba(255,79,79,0.12); color: var(--unproductive); }
+    .bn { background: rgba(136,136,170,0.12); color: var(--neutral); }
+
+    /* WEEKLY */
+    .week-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 10px; margin-bottom: 24px; }
+    .day-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 10px; text-align: center;
+    }
+    .day-name { font-size: 10px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+    .day-total { font-size: 18px; font-weight: 800; margin-top: 8px; }
+    .day-bar { height: 4px; border-radius: 2px; margin: 8px auto 0; width: 80%; }
+    .day-today { border-color: var(--accent); }
+
+    /* SETTINGS */
+    .settings-section { margin-bottom: 28px; }
+    .settings-title { font-size: 13px; font-weight: 700; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .setting-info .setting-name { font-size: 13px; }
+    .setting-info .setting-desc { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+    .toggle { position: relative; width: 40px; height: 22px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute; inset: 0; background: var(--border); border-radius: 11px;
+      cursor: pointer; transition: 0.3s;
+    }
+    .toggle input:checked + .toggle-track { background: var(--accent); }
+    .toggle-thumb {
+      position: absolute; top: 3px; left: 3px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: white; transition: 0.3s; pointer-events: none;
+    }
+    .toggle input:checked ~ .toggle-thumb { left: 21px; }
+
+    .domain-list { display: flex; flex-direction: column; gap: 8px; }
+    .domain-tag {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 12px;
+      font-family: monospace; font-size: 12px;
+    }
+    .remove-btn { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 14px; }
+    .remove-btn:hover { color: var(--unproductive); }
+    .add-domain { display: flex; gap: 8px; margin-top: 10px; }
+    .add-input {
+      flex: 1; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 9px 12px; color: var(--text);
+      font-family: monospace; font-size: 12px;
+    }
+    .add-input:focus { outline: none; border-color: var(--accent); }
+    .add-btn {
+      font-family: system-ui, sans-serif; font-size: 11px; font-weight: 700;
+      background: var(--accent); color: #0a0a0d; border: none;
+      padding: 9px 16px; border-radius: 8px; cursor: pointer;
+    }
+
+    .empty-state { text-align: center; color: var(--text-dim); padding: 40px; font-size: 14px; }
+    .session-row { font-family: monospace; }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Focus<span>Flow</span></div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" data-page="overview">Overview</button>
+    <button class="tab-btn" data-page="sites">Sites</button>
+    <button class="tab-btn" data-page="weekly">Weekly</button>
+    <button class="tab-btn" data-page="settings">Settings</button>
+  </div>
+  <button class="nav-sync" onclick="syncToBackend()">↑ Sync</button>
+</nav>
+
+<main>
+  <!-- OVERVIEW -->
+  <div class="page active" id="page-overview">
+    <div class="kpi-row">
+      <div class="kpi k-total">
+        <div class="kpi-label">Today Total</div>
+        <div class="kpi-value" id="kpi-total">0m</div>
+        <div class="kpi-sub">Active browsing time</div>
+      </div>
+      <div class="kpi k-prod">
+        <div class="kpi-label">Productive</div>
+        <div class="kpi-value" style="color:var(--productive)" id="kpi-prod">0m</div>
+        <div class="kpi-sub" id="kpi-prod-pct">0% of today</div>
+      </div>
+      <div class="kpi k-unprod">
+        <div class="kpi-label">Unproductive</div>
+        <div class="kpi-value" style="color:var(--unproductive)" id="kpi-unprod">0m</div>
+        <div class="kpi-sub" id="kpi-unprod-pct">0% of today</div>
+      </div>
+      <div class="kpi k-streak">
+        <div class="kpi-label">Sites Visited</div>
+        <div class="kpi-value" style="color:var(--accent2)" id="kpi-sites">0</div>
+        <div class="kpi-sub">Unique domains</div>
+      </div>
+    </div>
+
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Hourly Activity <span>today</span></div>
+        <canvas id="hourly-chart"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Category Split <span>today</span></div>
+        <canvas id="donut-chart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card full">
+      <div class="chart-title">Top Sites <span>by time today</span></div>
+      <canvas id="bar-chart"></canvas>
+    </div>
+  </div>
+
+  <!-- SITES -->
+  <div class="page" id="page-sites">
+    <div class="chart-card" style="overflow:auto">
+      <div class="chart-title">All Sessions Today</div>
+      <table class="sites-table">
+        <thead>
+          <tr>
+            <th>Domain</th>
+            <th>Category</th>
+            <th>Duration</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody id="sites-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- WEEKLY -->
+  <div class="page" id="page-weekly">
+    <div class="week-grid" id="week-grid"></div>
+    <div class="chart-card">
+      <div class="chart-title">Weekly Productivity Trend</div>
+      <canvas id="weekly-chart"></canvas>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="page" id="page-settings">
+    <div class="settings-section">
+      <div class="settings-title">General</div>
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-name">Weekly Report Notification</div>
+          <div class="setting-desc">Get notified every 7 days with your summary</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-weekly" checked/>
+          <div class="toggle-track"></div>
+          <div class="toggle-thumb"></div>
+        </label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-name">Auto-sync to Backend</div>
+          <div class="setting-desc">Sync session data to local FastAPI server</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-sync" checked/>
+          <div class="toggle-track"></div>
+          <div class="toggle-thumb"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-title">Productive Domains</div>
+      <div class="domain-list" id="productive-list"></div>
+      <div class="add-domain">
+        <input class="add-input" id="add-productive-input" placeholder="e.g. notion.so"/>
+        <button class="add-btn" onclick="addDomain('productive')">+ Add</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-title">Unproductive Domains</div>
+      <div class="domain-list" id="unproductive-list"></div>
+      <div class="add-domain">
+        <input class="add-input" id="add-unproductive-input" placeholder="e.g. instagram.com"/>
+        <button class="add-btn" style="background:var(--unproductive)" onclick="addDomain('unproductive')">+ Add</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="dashboard.js"></script>
+</body>
+</html>

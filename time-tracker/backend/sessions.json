@@ -1,0 +1,122 @@
+[
+  {
+    "url": "https://claude.ai/chat/5fafce42-4381-4ff5-9a38-bfb9c8f6f5d5",
+    "domain": "claude.ai",
+    "category": "productive",
+    "start": "2026-05-24T10:02:15.859Z",
+    "end": "2026-05-24T10:03:56.317Z",
+    "duration": 100
+  },
+  {
+    "url": "https://neetcode.io/",
+    "domain": "neetcode.io",
+    "category": "neutral",
+    "start": "2026-05-24T10:04:29.935Z",
+    "end": "2026-05-24T10:04:31.936Z",
+    "duration": 2
+  },
+  {
+    "url": "https://claude.ai/chat/5fafce42-4381-4ff5-9a38-bfb9c8f6f5d5",
+    "domain": "claude.ai",
+    "category": "productive",
+    "start": "2026-05-24T10:04:57.395Z",
+    "end": "2026-05-24T10:06:01.066Z",
+    "duration": 64
+  },
+  {
+    "url": "https://claude.ai/chat/5fafce42-4381-4ff5-9a38-bfb9c8f6f5d5",
+    "domain": "claude.ai",
+    "category": "productive",
+    "start": "2026-05-24T10:08:56.389Z",
+    "end": "2026-05-24T10:09:01.220Z",
+    "duration": 5
+  },
+  {
+    "url": "https://claude.ai/chat/5fafce42-4381-4ff5-9a38-bfb9c8f6f5d5",
+    "domain": "claude.ai",
+    "category": "productive",
+    "start": "2026-05-24T10:14:36.698Z",
+    "end": "2026-05-24T10:16:28.947Z",
+    "duration": 112
+  },
+  {
+    "url": "https://claude.ai/chat/5fafce42-4381-4ff5-9a38-bfb9c8f6f5d5",
+    "domain": "claude.ai",
+    "category": "productive",
+    "start": "2026-05-24T10:17:06.279Z",
+    "end": "2026-05-24T10:17:12.490Z",
+    "duration": 6
+  },
+  {
+    "url": "https://claude.ai/chat/5fafce42-4381-4ff5-9a38-bfb9c8f6f5d5",
+    "domain": "claude.ai",
+    "category": "productive",
+    "start": "2026-05-24T10:17:06.279Z",
+    "end": "2026-05-24T10:17:12.496Z",
+    "duration": 6
+  },
+  {
+    "url": "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js",
+    "domain": "cdnjs.cloudflare.com",
+    "category": "neutral",
+    "start": "2026-05-24T10:17:26.401Z",
+    "end": "2026-05-24T10:17:28.202Z",
+    "duration": 2
+  },
+  {
+    "url": "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js",
+    "domain": "cdnjs.cloudflare.com",
+    "category": "neutral",
+    "start": "2026-05-24T10:17:26.401Z",
+    "end": "2026-05-24T10:17:28.203Z",
+    "duration": 2
+  },
+  {
+    "url": "https://neetcode.io/practice/practice/neetcode250",
+    "domain": "neetcode.io",
+    "category": "neutral",
+    "start": "2026-05-24T10:17:58.488Z",
+    "end": "2026-05-24T10:18:01.222Z",
+    "duration": 3
+  },
+  {
+    "url": "https://claude.ai/chat/5fafce42-4381-4ff5-9a38-bfb9c8f6f5d5",
+    "domain": "claude.ai",
+    "category": "productive",
+    "start": "2026-05-24T10:20:07.931Z",
+    "end": "2026-05-24T10:21:07.734Z",
+    "duration": 60
+  },
+  {
+    "url": "https://claude.ai/chat/5fafce42-4381-4ff5-9a38-bfb9c8f6f5d5",
+    "domain": "claude.ai",
+    "category": "productive",
+    "start": "2026-05-24T10:20:07.931Z",
+    "end": "2026-05-24T10:21:07.742Z",
+    "duration": 60
+  },
+  {
+    "url": "https://neetcode.io/practice/ai-coding",
+    "domain": "neetcode.io",
+    "category": "neutral",
+    "start": "2026-05-24T10:21:07.777Z",
+    "end": "2026-05-24T10:21:10.666Z",
+    "duration": 3
+  },
+  {
+    "url": "https://claude.ai/chat/5fafce42-4381-4ff5-9a38-bfb9c8f6f5d5",
+    "domain": "claude.ai",
+    "category": "productive",
+    "start": "2026-05-24T10:22:12.420Z",
+    "end": "2026-05-24T10:23:19.426Z",
+    "duration": 67
+  },
+  {
+    "url": "https://github.com/new",
+    "domain": "github.com",
+    "category": "productive",
+    "start": "2026-05-24T10:39:24.465Z",
+    "end": "2026-05-24T10:39:32.741Z",
+    "duration": 8
+  }
+]
