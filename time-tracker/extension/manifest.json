@@ -23,6 +23,6 @@
     "128": "icons/icon128.png"
   },
   "content_security_policy": {
-  "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; style-src 'self' 'unsafe-inline'; font-src https://fonts.gstatic.com; connect-src https://fonts.googleapis.com http://localhost:* http://127.0.0.1:*;"
+  "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://focusflow-y99w.onrender.com http://localhost:* http://127.0.0.1:*;"
 }
 }
